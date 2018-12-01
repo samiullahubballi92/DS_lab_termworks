@@ -1,0 +1,81 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+struct node
+{
+    int expx,coeff,expy,expz;
+    struct node *next;
+};
+typedef struct node NODE;
+NODE* headnode();
+NODE* create(NODE* );
+int evaluate(NODE* );
+void show(NODE* );
+int main()
+{
+    int res;
+    NODE *poly;
+    poly=headnode();
+    poly=create(poly);
+    printf("\nthe polynomial expression is :\n");
+    show(poly);
+    res=evaluate(poly);
+    printf("\nthe evaluated value of polynomial is %d",res);
+    return 0;
+}
+NODE* headnode()
+{
+    NODE* temp;
+    temp=(NODE*)malloc(sizeof(NODE));
+    temp->expx=-1;
+    temp->expy=-1;
+    temp->expz=-1;
+    temp->next=temp;
+    return temp;
+}
+NODE* create(NODE *last)
+{
+    int i=1,n;
+    NODE* temp;
+    printf("\nenter the number of tems polynomial\n");
+    scanf("%d",&n);
+    while(i<=n)
+    {
+        printf("\nenter the term %d\t",i);
+        temp=(NODE*)malloc(sizeof(NODE));
+        printf("\nenter the coefficient ,x_power,y_power,z_power\n");
+        scanf("%d%d%d%d",&temp->coeff,&temp->expx,temp->expy,temp->expz);
+        i++;
+        temp->next=last->next;
+        last->next=temp;
+        last=temp;
+    }
+    return last;
+}
+int evaluate(NODE* node)
+{
+    int res=0,x,y,z;
+    NODE *temp,*p;
+    printf("\nenter the values of x,y,z\n");
+    scanf("%d%d%d",&x,&y,&z);
+    temp=node->next;
+    p=node->next->next;
+    while(p!=temp)
+    {
+        res+=p->coeff*pow(x,p->expx)*pow(y,p->expy)*pow(z,p->expz);
+        p=p->next;
+    }
+    return res;
+}
+void show(NODE *node)
+{
+    NODE *q;
+    q=node->next->next;
+    while(q!=node)
+    {
+        printf("%dx^%dy^%dz^%d+",q->coeff,q->expx,q->expy,q->expz);
+        q=q->next;
+
+    }
+    printf("%dx^%dy^%dz^%d\n",q->coeff,q->expx,q->expy,q->expz);
+}
